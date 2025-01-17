@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <nav>
+        <div>
+            <a href="home.html">Home</a>
+            <a href="createjob.html">Create Job</a>
+        </div>
+        <a href="logout.html">Logout</a>
+    </nav>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Employee</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #427a49;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #641e1e;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create Employee</h1>
+    <form id="employeeForm">
+        <label for="firstName">First Name: </label>
+        <input type="text" id="firstName" required><br><br>
+
+        <label for="lastName">Last Name: </label>
+        <input type="text" id="lastName" required><br><br>
+
+        <label for="username">Username: </label>
+        <input type="text" id="username" required><br><br>
+
+        <label for="email">Email: </label>
+        <input type="email" id="email" required><br><br>
+
+        <label for="cell">Cell #: </label>
+        <input type="text" id="cell" required><br><br>
+
+        <label for="role">Role: </label>
+        <select id="role" required>
+            <option value="">Select Role</option>
+            <option value="Cabinet Maker">Cabinet Maker</option>
+            <option value="Installer">Installer</option>
+        </select><br><br>
+
+        <label for="office">Office: </label>
+        <select id="office" required>
+            <option value="">Select Office</option>
+            <option value="400">400</option>
+            <option value="402">402</option>
+            <option value="403">403</option>
+        </select><br><br>
+
+        <button type="button" onclick="addEmployee()">Add Employee</button>
+        <p class="error" id="error"></p>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Cell</th>
+                <th>Role</th>
+                <th>Actions</th>
+                <th>Office</th>
+            </tr>
+        </thead>
+        <tbody id="employeeTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        let employees = [];
+
+        function addEmployee() {
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const cell = document.getElementById("cell").value;
+            const role = document.getElementById("role").value;
+            const errorElement = document.getElementById("error");
+            const office = document.getElementById("office").value;
+
+
+            // Clear error message
+            errorElement.textContent = "";
+
+            // Validate inputs
+            if (!firstName || !lastName || !username || !email || !office || !cell || !role) {
+                errorElement.textContent = "All fields are required.";
+                return;
+            }
+
+            // Check for duplicates by username or email
+            const duplicate = employees.some(employee => employee.username === username || employee.email === email);
+            if (duplicate) {
+                errorElement.textContent = "An employee with the same username or email already exists.";
+                return;
+            }
+
+            // Add employee to array
+            const employee = {
+                firstName,
+                lastName,
+                username,
+                email,
+                cell,
+                role,
+                office
+            };
+
+            employees.push(employee);
+            renderTable();
+
+            // Reset form
+            document.getElementById("employeeForm").reset();
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById("employeeTableBody");
+            tableBody.innerHTML = "";
+
+            employees.forEach((employee, index) => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${employee.firstName}</td>
+                    <td>${employee.lastName}</td>
+                    <td>${employee.username}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.cell}</td>
+                    <td>${employee.role}</td>
+                    <td>${employee.office}</td>
+
+                    <td>
+                        <button onclick="editEmployee(${index})">Edit</button>
+                        <button onclick="deleteEmployee(this)">Delete</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteEmployee(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        function editEmployee(index) {
+            const employee = employees[index];
+
+            document.getElementById("firstName").value = employee.firstName;
+            document.getElementById("lastName").value = employee.lastName;
+            document.getElementById("username").value = employee.username;
+            document.getElementById("email").value = employee.email;
+            document.getElementById("cell").value = employee.cell;
+            document.getElementById("role").value = employee.role;
+            document.getElementById("office").value = employee.office;
+
+
+            // Remove the employee and re-render table after editing
+            employees.splice(index, 1);
+            renderTable();
+        }
+    </script>
+</body>
+</html>
