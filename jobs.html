@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <nav>
+        <div>
+            <a href="profile.html">Profile</a>
+        </div>
+        <a href="logout.html">Logout</a>
+    </nav>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Saver - Job Overview</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #427a49;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #641e1e;
+        }
+        .error {
+            color: red;
+        }
+        .status-to-do {
+            color: red;
+        }
+        .status-in-progress {
+            color: orange;
+        }
+        .status-completed {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kitchen Saver Cabinets</h1>
+    <form id="filterForm">
+        <label for="filterOffice">Filter by Office:</label>
+        <select id="filterOffice" onchange="applyFilters()">
+            <option value="">All Offices</option>
+            <option value="400">400</option>
+            <option value="402">402</option>
+            <option value="403">403</option>
+        </select>
+
+        <label for="filterInstaller">Filter by Installer:</label>
+        <input type="text" id="filterInstaller" placeholder="Installer Name" oninput="applyFilters()">
+
+        <label for="filterStatus">Filter by Status:</label>
+        <select id="filterStatus" onchange="applyFilters()">
+            <option value="">All Statuses</option>
+            <option value="To-Do">To-Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Job #</th>
+                <th>Job Name</th>
+                <th># of Cabinets</th>
+                <th># of Uppers</th>
+                <th># of Lowers</th>
+                <th>Cabinet Maker</th>
+                <th>Installer</th>
+                <th>Due Date</th>
+                <th>Job Color</th>
+                <th>Office</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="jobTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        let jobs = [
+            {
+                jobNumber: 101,
+                jobName: "Kitchen Remodel A",
+                numCabinets: 10,
+                numUppers: 6,
+                numLowers: 4,
+                cabinetMaker: "John Doe",
+                installer: "Mike Smith",
+                dueDate: "2025-02-15",
+                jobColor: "White",
+                office: "400",
+                status: "To-Do"
+            },
+            {
+                jobNumber: 102,
+                jobName: "Kitchen Remodel B",
+                numCabinets: 15,
+                numUppers: 8,
+                numLowers: 7,
+                cabinetMaker: "Jane Doe",
+                installer: "Sarah Lee",
+                dueDate: "2025-03-10",
+                jobColor: "Blue",
+                office: "402",
+                status: "In Progress"
+            }
+        ];
+
+        function renderTable(filteredJobs = jobs) {
+            const tableBody = document.getElementById("jobTableBody");
+            tableBody.innerHTML = "";
+
+            filteredJobs.forEach((job, index) => {
+                const row = document.createElement("tr");
+
+                let statusClass = "";
+                if (job.status === "To-Do") {
+                    statusClass = "status-to-do";
+                } else if (job.status === "In Progress") {
+                    statusClass = "status-in-progress";
+                } else if (job.status === "Completed") {
+                    statusClass = "status-completed";
+                }
+
+                row.innerHTML = `
+                    <td>${job.jobNumber}</td>
+                    <td>${job.jobName}</td>
+                    <td>${job.numCabinets}</td>
+                    <td>${job.numUppers}</td>
+                    <td>${job.numLowers}</td>
+                    <td>${job.cabinetMaker}</td>
+                    <td>${job.installer}</td>
+                    <td>${job.dueDate}</td>
+                    <td>${job.jobColor}</td>
+                    <td>${job.office}</td>
+                    <td>
+                        <select onchange="updateStatus(${index}, this)" class="${statusClass}">
+                            <option value="To-Do" ${job.status === "To-Do" ? "selected" : ""}>To-Do</option>
+                            <option value="In Progress" ${job.status === "In Progress" ? "selected" : ""}>In Progress</option>
+                            <option value="Completed" ${job.status === "Completed" ? "selected" : ""}>Completed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="deleteJob(${index})">Delete</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function applyFilters() {
+            const office = document.getElementById("filterOffice").value;
+            const installer = document.getElementById("filterInstaller").value.toLowerCase();
+            const status = document.getElementById("filterStatus").value;
+
+            const filteredJobs = jobs.filter(job => {
+                return (
+                    (office === "" || job.office === office) &&
+                    (installer === "" || job.installer.toLowerCase().includes(installer)) &&
+                    (status === "" || job.status === status)
+                );
+            });
+
+            renderTable(filteredJobs);
+        }
+
+        function updateStatus(index, selectElement) {
+            const newStatus = selectElement.value;
+            jobs[index].status = newStatus;
+            applyFilters();
+        }
+
+        function deleteJob(index) {
+            jobs.splice(index, 1);
+            applyFilters();
+        }
+
+        // Initial render
+        renderTable();
+    </script>
+</body>
+</html>
+
+<link rel="stylesheet" href="style.css">
