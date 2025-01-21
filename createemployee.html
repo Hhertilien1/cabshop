@@ -3,35 +3,94 @@
 <head>
     <nav>
         <div>
-            <a href="admin.html">Home</a>
-            <a href="createjob.html">Create Job</a>
+            <button onclick="window.location.href='admin.html'">Home</button>
+            <button onclick="window.location.href='createjob.html'">Create Job</button>
+            <button onclick="window.location.href='updateprofile.html'">Update Profile</button>
         </div>
-        <a href="logout.html">Logout</a>
+        <button onclick="window.location.href='logout.html'">Logout</button>
     </nav>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Employee</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
         }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #555;
+            font-weight: normal;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
         th, td {
             border: 1px solid #427a49;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #641e1e;
+            color: white;
         }
+
+        button {
+            background-color: #427a49;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #305c35;
+        }
+
         .error {
             color: red;
+        }
+
+        #employeeForm {
+            margin: 20px auto;
+            width: 50%;
+            text-align: left;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+        }
+
+        input, select {
+            margin-left: 10px;
+            padding: 5px;
+            width: calc(100% - 120px);
+        }
+
+        .form-actions {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>Create Employee</h1>
+    <header>
+        <h1 class="dashboard-headline">Effortlessly Build Your Team</h1>
+        <h2 class="dashboard-subheadline">Add, manage, and organize employees seamlessly with our intuitive interface designed for effective team collaboration.</h2>
+    </header>
     <form id="employeeForm">
         <label for="firstName">First Name: </label>
         <input type="text" id="firstName" required><br><br>
@@ -48,14 +107,14 @@
         <label for="cell">Cell #: </label>
         <input type="text" id="cell" required><br><br>
 
-        <label for="role">Role: </label>
+        <label for="role">Role: </label><br><br>
         <select id="role" required>
             <option value="">Select Role</option>
             <option value="Cabinet Maker">Cabinet Maker</option>
             <option value="Installer">Installer</option>
         </select><br><br>
 
-        <label for="office">Office: </label>
+        <label for="office">Office: </label><br><br>
         <select id="office" required>
             <option value="">Select Office</option>
             <option value="400">400</option>
@@ -63,7 +122,10 @@
             <option value="403">403</option>
         </select><br><br>
 
-        <button type="button" onclick="addEmployee()">Add Employee</button>
+        <div class="form-actions">
+            <button type="button" onclick="addEmployee()">Add Employee</button>
+            <button type="button" onclick="clearForm()">Clear Form</button>
+        </div>
         <p class="error" id="error"></p>
     </form>
 
@@ -76,8 +138,8 @@
                 <th>Email</th>
                 <th>Cell</th>
                 <th>Role</th>
-                <th>Actions</th>
                 <th>Office</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody id="employeeTableBody">
@@ -94,48 +156,31 @@
             const email = document.getElementById("email").value;
             const cell = document.getElementById("cell").value;
             const role = document.getElementById("role").value;
-            const errorElement = document.getElementById("error");
             const office = document.getElementById("office").value;
+            const errorElement = document.getElementById("error");
 
-
-            // Clear error message
             errorElement.textContent = "";
 
-            // Validate inputs
-            if (!firstName || !lastName || !username || !email || !office || !cell || !role) {
+            if (!firstName || !lastName || !username || !email || !cell || !role || !office) {
                 errorElement.textContent = "All fields are required.";
                 return;
             }
 
-            // Check for duplicates by username or email
-            const duplicate = employees.some(employee => employee.username === username || employee.email === email);
+            const duplicate = employees.some(emp => emp.username === username || emp.email === email);
             if (duplicate) {
                 errorElement.textContent = "An employee with the same username or email already exists.";
                 return;
             }
 
-            // Add employee to array
-            const employee = {
-                firstName,
-                lastName,
-                username,
-                email,
-                cell,
-                role,
-                office
-            };
-
-            employees.push(employee);
+            employees.push({ firstName, lastName, username, email, cell, role, office });
             renderTable();
-
-            // Reset form
-            document.getElementById("employeeForm").reset();
+            clearForm();
         }
 
         function renderTable() {
             const tableBody = document.getElementById("employeeTableBody");
             tableBody.innerHTML = "";
-
+                
             employees.forEach((employee, index) => {
                 const row = document.createElement("tr");
 
@@ -147,8 +192,7 @@
                     <td>${employee.cell}</td>
                     <td>${employee.role}</td>
                     <td>${employee.office}</td>
-
-                    <td>
+                    <td class="actions">
                         <button onclick="editEmployee(${index})">Edit</button>
                         <button onclick="deleteEmployee(this)">Delete</button>
                     </td>
@@ -158,9 +202,15 @@
             });
         }
 
-        function deleteEmployee(button) {
-            const row = button.parentElement.parentElement;
-            row.remove();
+        function clearForm() {
+            document.getElementById("employeeForm").reset();
+        }
+
+        function confirmDelete(index) {
+            if (confirm("Are you sure you want to delete this employee?")) {
+                employees.splice(index, 1);
+                renderTable();
+            }
         }
 
         function editEmployee(index) {
@@ -174,8 +224,6 @@
             document.getElementById("role").value = employee.role;
             document.getElementById("office").value = employee.office;
 
-
-            // Remove the employee and re-render table after editing
             employees.splice(index, 1);
             renderTable();
         }
@@ -183,10 +231,5 @@
 </body>
 </html>
 <link rel="stylesheet" href="style.css">
-
-
-function clearError() {
-    document.getElementById("error").textContent = "";
-}
 
 
