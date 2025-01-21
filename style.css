@@ -7,7 +7,7 @@ body {
     background-size: cover; 
     background-repeat: no-repeat; 
     background-position: center; 
-    color: rgb(94, 28, 28); 
+    color: rgb(0, 0, 0); 
 }
 
 nav {
@@ -40,8 +40,25 @@ h1 {
     max-width: 800px;
     padding: 20px;
     border-radius: 10px;
+    
 }
 
+.filter-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Add space below the form */
+}
+
+#filterForm {
+    display: flex;
+    gap: 10px; /* Add spacing between form elements */
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+#filterForm label {
+    margin-right: 5px;
+}
 
 .filter-section label,
 .filter-section input,
@@ -150,4 +167,24 @@ button:hover {
 .data-table th {
     background-color: #f2f2f2;
     font-weight: bold;
+}
+
+.dashboard-headline {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #641e1e;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dashboard-subheadline {
+    font-size: 1.25rem;
+    color: #641e1e;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.table-name {
+    font-size: 1.25rem;
+    color: #641e1e;
 }

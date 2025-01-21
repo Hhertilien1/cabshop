@@ -3,11 +3,12 @@
 <head>
     <nav>
         <div>
-            <a href="createjob.html">Create Job</a>
-            <a href="createemployee.html">Create Employee</a>
+            <button onclick="window.location.href='createjob.html'">Create Job</button>
+            <button onclick="window.location.href='createemployee.html'">Create Employee</button>
         </div>
-        <a href="logout.html">Logout</a>
+        <button onclick="window.location.href='logout.html'">Logout</button>
     </nav>
+    
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,27 +42,34 @@
     </style>
 </head>
 <body>
-    <h1>Kitchen Saver Cabinets</h1>
-    <form id="filterForm">
-        <label for="filterOffice">Filter by Office:</label>
-        <select id="filterOffice" onchange="applyFilters()">
-            <option value="">All Offices</option>
-            <option value="400">400</option>
-            <option value="402">402</option>
-            <option value="403">403</option>
-        </select>
+    <header>
+        <h1 class="dashboard-headline">Admin Dashboard - Manage Jobs and Teams</h1>
+        <h2 class="dashboard-subheadline">Efficiently track, update, and manage job details for your kitchen remodeling projects.</h2>
+    </header>
+    <h1 class="table-name">Kitchen Saver Cabinets</h1>
+    <div class="filter-container">
+        <form id="filterForm">
+            <label for="filterOffice">Filter by Office:</label>
+            <select id="filterOffice" onchange="applyFilters()">
+                <option value="">All Offices</option>
+                <option value="400">400</option>
+                <option value="402">402</option>
+                <option value="403">403</option>
+            </select>
 
-        <label for="filterInstaller">Filter by Installer:</label>
-        <input type="text" id="filterInstaller" placeholder="Installer Name" oninput="applyFilters()">
+            <label for="filterInstaller">Filter by Installer:</label>
+            <input type="text" id="filterInstaller" placeholder="Installer Name" oninput="applyFilters()">
 
-        <label for="filterStatus">Filter by Status:</label>
-        <select id="filterStatus" onchange="applyFilters()">
-            <option value="">All Statuses</option>
-            <option value="To-Do">To-Do</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-        </select>
-    </form>
+            <label for="filterStatus">Filter by Status:</label>
+            <select id="filterStatus" onchange="applyFilters()">
+                <option value="">All Statuses</option>
+                <option value="To-Do">To-Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button type="button" onclick="clearFilters()">Clear Filters</button>
+        </form>
+    </div>
 
     <table>
         <thead>
@@ -114,6 +122,15 @@
             }
         ];
 
+        function deleteJob(index) {
+            const confirmed = confirm("Are you sure you want to delete this job?");
+            if (confirmed) {
+                jobs.splice(index, 1);
+                applyFilters();
+            }
+        }
+
+
         function renderTable(filteredJobs = jobs) {
             const tableBody = document.getElementById("jobTableBody");
             tableBody.innerHTML = "";
@@ -157,6 +174,13 @@
             });
         }
 
+        function clearFilters() {
+            document.getElementById("filterOffice").value = "";
+            document.getElementById("filterInstaller").value = "";
+            document.getElementById("filterStatus").value = "";
+            applyFilters(); // Reapply filters with cleared inputs
+        }
+
         function applyFilters() {
             const office = document.getElementById("filterOffice").value;
             const installer = document.getElementById("filterInstaller").value.toLowerCase();
@@ -176,11 +200,6 @@
         function updateStatus(index, selectElement) {
             const newStatus = selectElement.value;
             jobs[index].status = newStatus;
-            applyFilters();
-        }
-
-        function deleteJob(index) {
-            jobs.splice(index, 1);
             applyFilters();
         }
 
