@@ -3,10 +3,11 @@
 <head>
     <nav>
         <div>
-            <a href="admin.html">Home</a>
-            <a href="createemployee.html">Create Employee</a>
+            <button onclick="window.location.href='admin.html'">Home</button>
+            <button onclick="window.location.href='createemployee.html'">Create Employee</button>
+            <button onclick="window.location.href='updateprofile.html'">Update Profile</button>
         </div>
-        <a href="logout.html">Logout</a>
+        <button onclick="window.location.href='logout.html'">Logout</button>
     </nav>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +43,10 @@
     </style>
 </head>
 <body>
-    <h1>Create Jobs</h1>
+    <header>
+        <h1 class="dashboard-headline">Create Jobs - Organize Your Projects Seamlessly</h1>
+        <h2 class="dashboard-subheadline">Input job details, track progress, and manage tasks all in one place with an intuitive interface.</h2>
+    </header>
     <form id="jobForm">
         <label for="jobNumber">Job #: </label>
         <input type="number" id="jobNumber" required><br><br>
@@ -89,6 +93,7 @@
 
         <button type="button" onclick="addJob()">Add Job</button>
         <p class="error" id="error"></p>
+        <p class="success" id="success"></p>
     </form>
 
     <table>
@@ -116,6 +121,11 @@
         let jobs = [];
 
         function addJob() {
+
+            const errorElement = document.getElementById("error");
+            const successElement = document.getElementById("success");
+            errorElement.textContent = "";
+            successElement.textContent = "";
             const jobNumber = document.getElementById("jobNumber").value;
             const jobName = document.getElementById("jobName").value;
             const numCabinets = document.getElementById("numCabinets").value;
@@ -127,10 +137,11 @@
             const jobColor = document.getElementById("jobColor").value;
             const office = document.getElementById("office").value;
             const status = document.getElementById("status").value;
-            const errorElement = document.getElementById("error");
 
             // Clear error message
             errorElement.textContent = "";
+            successElement.textContent = "Job Added Successfully!";
+            
 
             // Validate inputs
             if (!jobNumber || !jobName || !numCabinets || !numUppers || !numLowers || !cabinetMaker || !installer || !dueDate || !jobColor || !office || !status) {
@@ -154,10 +165,10 @@
             };
 
             jobs.push(job);
-            renderTable();
 
-            // Reset form
-            document.getElementById("jobForm").reset();
+            successElement.textContent = "Job Added Successfully!";
+            renderTable();
+            document.getElementById("jobForm").reset()
         }
 
         function renderTable() {
@@ -198,9 +209,11 @@
             });
         }
 
-        function deleteJob(button) {
-            const row = button.parentElement.parentElement;
-            row.remove();
+        function deleteJob(index) {
+            if (confirm("Are you sure you want to delete this job?")) {
+                jobs.splice(index, 1);
+                renderTable();
+            }
         }
 
         function editJob(index) {
