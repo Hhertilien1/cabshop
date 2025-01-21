@@ -68,8 +68,17 @@
                 <option value="In Progress">In Progress</option>
                 <option value="Completed">Completed</option>
             </select>
+            <button type="button" onclick="showInstructions()">How to Use Filters</button>
             <button type="button" onclick="clearFilters()">Clear Filters</button>
         </form>
+    </div>
+    </div>
+    <div class="backdrop" id="backdrop" onclick="hideInstructions()"></div>
+    <div class="modal" id="modal">
+        <h2>How to Use Filters</h2>
+        <p>Select filters from the dropdown menus to narrow down the displayed jobs by office or status.</p>
+        <p>Click "Apply" to see filtered results.</p>
+        <button onclick="hideInstructions()">Close</button>
     </div>
 
     <table>
@@ -202,6 +211,21 @@
             const newStatus = selectElement.value;
             jobs[index].status = newStatus;
             applyFilters();
+        }
+
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('backdrop').style.display = 'none';
+
+        function showInstructions() {
+            // Show modal and backdrop when the link is clicked
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('backdrop').style.display = 'block';
+        }
+
+        function hideInstructions() {
+            // Hide modal and backdrop when closed
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('backdrop').style.display = 'none';
         }
 
         // Initial render
