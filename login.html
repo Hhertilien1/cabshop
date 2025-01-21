@@ -8,6 +8,10 @@
     <title>Login Page</title>
 </head>
 <body>
+    <header>
+        <h1 class="dashboard-headline">Welcome Kitchen Saver Employees!</h1>
+        <h2 class="dashboard-subheadline">Login to access your personalized dashboard and tools.</h2>
+    </header>
     <div class="login-container">
         <h2>Login</h2>
         <form action="/login" method="POST">
@@ -16,7 +20,7 @@
             <button type="submit" class="form-button">Login</button>
         </form>
         <div class="signup-link">
-            <p>Don't have an account? <a href="signup.html">Sign up!</a></p>
+            <p>Don't have an account? <button onclick="window.location.href='signup.html'">Sign up!</button></p>
         </div>
     </div>
 </body>
