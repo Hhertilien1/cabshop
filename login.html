@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <link rel="stylesheet" href="style.css" />
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-</head>
-<body>
-    <header>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
         <h1 class="dashboard-headline">Welcome Kitchen Saver Employees!</h1>
-        <h2 class="dashboard-subheadline">Login to access your personalized dashboard and tools.</h2>
-    </header>
-    <div class="login-container">
+        <h2 class="dashboard-subheadline">
+          Login to access your personalized dashboard and tools.
+        </h2>
+      </header>
+      <div class="login-container">
         <h2>Login</h2>
         <form action="/login" method="POST">
-            <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
-            <input type="password" name="password" class="form-input" placeholder="Enter your password" required>
-            <button type="submit" class="form-button">Login</button>
+          <input
+            type="email"
+            name="email"
+            class="form-input"
+            placeholder="Enter your email"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            class="form-input"
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit" class="form-button">Login</button>
         </form>
         <div class="signup-link">
-            <p>Don't have an account? <button onclick="window.location.href='signup.html'">Sign up!</button></p>
+          <p>
+            Don't have an account?
+            <button onclick="window.location.href='signup.html'">
+              Sign up!
+            </button>
+          </p>
         </div>
+      </div>
     </div>
 </body>
+<footer class="footer">
+  <p>Kitchen Saver Cabinets - Internal Use Only</p>
+  <p>
+    Need help? Contact IT Support at
+    <a href="mailto:itsupport@kitchensaver.com"
+      >itsupport@kitchensaver.com</a
+    >
+    <!-- email is a dummy place holder untill i get the real IT email -->
+  </p>
+  <p>Demo Version 1.0 | Last Updated: Jan 2025</p>
+</footer>
 </html>

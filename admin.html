@@ -1,163 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <nav>
-        <div>
-            <button onclick="window.location.href='createjob.html'">Create Job</button>
-            <button onclick="window.location.href='createemployee.html'">Create Employee</button>
-            <button onclick="window.location.href='updateprofile.html'">Update Profile</button>
-        </div>
-        <button onclick="window.location.href='logout.html'">Logout</button>
+      <div>
+        <button onclick="window.location.href='createjob.html'">
+          Create Job
+        </button>
+        <button onclick="window.location.href='createemployee.html'">
+          Create Employee
+        </button>
+        <button onclick="window.location.href='updateprofile.html'">
+          Update Profile
+        </button>
+      </div>
+      <button onclick="window.location.href='logout.html'">Logout</button>
     </nav>
-    
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kitchen Saver - Job Overview</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #427a49;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #641e1e;
-        }
-        .error {
-            color: red;
-        }
-        .status-to-do {
-            color: red;
-        }
-        .status-in-progress {
-            color: orange;
-        }
-        .status-completed {
-            color: green;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #427a49;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #641e1e;
+      }
+      .error {
+        color: red;
+      }
+      .status-to-do {
+        color: red;
+      }
+      .status-in-progress {
+        color: orange;
+      }
+      .status-completed {
+        color: green;
+      }
     </style>
-</head>
-<body>
-    <header>
-        <h1 class="dashboard-headline">Admin Dashboard - Manage Jobs and Teams</h1>
-        <h2 class="dashboard-subheadline">Efficiently track, update, and manage job details for your kitchen remodeling projects.</h2>
-    </header>
-    <h1 class="table-name">Kitchen Saver Cabinets</h1>
-    <div class="filter-container">
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="dashboard-headline">
+          Admin Dashboard - Manage Jobs and Teams
+        </h1>
+        <h2 class="dashboard-subheadline">
+          Efficiently track, update, and manage job details for your kitchen
+          remodeling projects.
+        </h2>
+      </header>
+      <h1 class="table-name">Kitchen Saver Cabinets</h1>
+      <div class="filter-container">
         <form id="filterForm">
-            <label for="filterOffice">Filter by Office:</label>
-            <select id="filterOffice" onchange="applyFilters()">
-                <option value="">All Offices</option>
-                <option value="400">400</option>
-                <option value="402">402</option>
-                <option value="403">403</option>
-            </select>
+          <label for="filterOffice">Filter by Office:</label>
+          <select id="filterOffice" onchange="applyFilters()">
+            <option value="">All Offices</option>
+            <option value="400">400</option>
+            <option value="402">402</option>
+            <option value="403">403</option>
+          </select>
 
-            <label for="filterInstaller">Filter by Installer:</label>
-            <input type="text" id="filterInstaller" placeholder="Installer Name" oninput="applyFilters()">
+          <label for="filterInstaller">Filter by Installer:</label>
+          <input
+            type="text"
+            id="filterInstaller"
+            placeholder="Installer Name"
+            oninput="applyFilters()"
+          />
 
-            <label for="filterStatus">Filter by Status:</label>
-            <select id="filterStatus" onchange="applyFilters()">
-                <option value="">All Statuses</option>
-                <option value="To-Do">To-Do</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-            </select>
-            <button type="button" onclick="showInstructions()">How to Use Filters</button>
-            <button type="button" onclick="clearFilters()">Clear Filters</button>
+          <label for="filterStatus">Filter by Status:</label>
+          <select id="filterStatus" onchange="applyFilters()">
+            <option value="">All Statuses</option>
+            <option value="To-Do">To-Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button type="button" onclick="showInstructions()">
+            How to Use Filters
+          </button>
+          <button type="button" onclick="clearFilters()">Clear Filters</button>
         </form>
-    </div>
-    </div>
-    <div class="backdrop" id="backdrop" onclick="hideInstructions()"></div>
-    <div class="modal" id="modal">
+      </div>
+
+      <div class="backdrop" id="backdrop" onclick="hideInstructions()"></div>
+      <div class="modal" id="modal">
         <h2>How to Use Filters</h2>
-        <p>Select filters from the dropdown menus to narrow down the displayed jobs by office or status.</p>
+        <p>
+          Select filters from the dropdown menus to narrow down the displayed
+          jobs by office or status.
+        </p>
         <p>Click "Apply" to see filtered results.</p>
         <button onclick="hideInstructions()">Close</button>
-    </div>
+      </div>
 
-    <table>
+      <table>
         <thead>
-            <tr>
-                <th>Job #</th>
-                <th>Job Name</th>
-                <th># of Cabinets</th>
-                <th># of Uppers</th>
-                <th># of Lowers</th>
-                <th>Cabinet Maker</th>
-                <th>Installer</th>
-                <th>Due Date</th>
-                <th>Job Color</th>
-                <th>Office</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+          <tr>
+            <th>Job #</th>
+            <th>Job Name</th>
+            <th># of Cabinets</th>
+            <th># of Uppers</th>
+            <th># of Lowers</th>
+            <th>Cabinet Maker</th>
+            <th>Installer</th>
+            <th>Due Date</th>
+            <th>Job Color</th>
+            <th>Office</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
         </thead>
-        <tbody id="jobTableBody">
-        </tbody>
-    </table>
+        <tbody id="jobTableBody"></tbody>
+      </table>
 
-    <script>
+      <script>
         let jobs = [
-            {
-                jobNumber: 101,
-                jobName: "Kitchen Remodel A",
-                numCabinets: 10,
-                numUppers: 6,
-                numLowers: 4,
-                cabinetMaker: "John Doe",
-                installer: "Mike Smith",
-                dueDate: "2025-02-15",
-                jobColor: "White",
-                office: "400",
-                status: "To-Do"
-            },
-            {
-                jobNumber: 102,
-                jobName: "Kitchen Remodel B",
-                numCabinets: 15,
-                numUppers: 8,
-                numLowers: 7,
-                cabinetMaker: "Jane Doe",
-                installer: "Sarah Lee",
-                dueDate: "2025-03-10",
-                jobColor: "Blue",
-                office: "402",
-                status: "In Progress"
-            }
+          {
+            jobNumber: 101,
+            jobName: "Kitchen Remodel A",
+            numCabinets: 10,
+            numUppers: 6,
+            numLowers: 4,
+            cabinetMaker: "John Doe",
+            installer: "Mike Smith",
+            dueDate: "2025-02-15",
+            jobColor: "White",
+            office: "400",
+            status: "To-Do",
+          },
+          {
+            jobNumber: 102,
+            jobName: "Kitchen Remodel B",
+            numCabinets: 15,
+            numUppers: 8,
+            numLowers: 7,
+            cabinetMaker: "Jane Doe",
+            installer: "Sarah Lee",
+            dueDate: "2025-03-10",
+            jobColor: "Blue",
+            office: "402",
+            status: "In Progress",
+          },
         ];
 
         function deleteJob(index) {
-            const confirmed = confirm("Are you sure you want to delete this job?");
-            if (confirmed) {
-                jobs.splice(index, 1);
-                applyFilters();
-            }
+          const confirmed = confirm(
+            "Are you sure you want to delete this job?"
+          );
+          if (confirmed) {
+            jobs.splice(index, 1);
+            applyFilters();
+          }
         }
 
-
         function renderTable(filteredJobs = jobs) {
-            const tableBody = document.getElementById("jobTableBody");
-            tableBody.innerHTML = "";
+          const tableBody = document.getElementById("jobTableBody");
+          tableBody.innerHTML = "";
 
-            filteredJobs.forEach((job, index) => {
-                const row = document.createElement("tr");
+          filteredJobs.forEach((job, index) => {
+            const row = document.createElement("tr");
 
-                let statusClass = "";
-                if (job.status === "To-Do") {
-                    statusClass = "status-to-do";
-                } else if (job.status === "In Progress") {
-                    statusClass = "status-in-progress";
-                } else if (job.status === "Completed") {
-                    statusClass = "status-completed";
-                }
+            let statusClass = "";
+            if (job.status === "To-Do") {
+              statusClass = "status-to-do";
+            } else if (job.status === "In Progress") {
+              statusClass = "status-in-progress";
+            } else if (job.status === "Completed") {
+              statusClass = "status-completed";
+            }
 
-                row.innerHTML = `
+            row.innerHTML = `
                     <td>${job.jobNumber}</td>
                     <td>${job.jobName}</td>
                     <td>${job.numCabinets}</td>
@@ -170,9 +192,15 @@
                     <td>${job.office}</td>
                     <td>
                         <select onchange="updateStatus(${index}, this)" class="${statusClass}">
-                            <option value="To-Do" ${job.status === "To-Do" ? "selected" : ""}>To-Do</option>
-                            <option value="In Progress" ${job.status === "In Progress" ? "selected" : ""}>In Progress</option>
-                            <option value="Completed" ${job.status === "Completed" ? "selected" : ""}>Completed</option>
+                            <option value="To-Do" ${
+                              job.status === "To-Do" ? "selected" : ""
+                            }>To-Do</option>
+                            <option value="In Progress" ${
+                              job.status === "In Progress" ? "selected" : ""
+                            }>In Progress</option>
+                            <option value="Completed" ${
+                              job.status === "Completed" ? "selected" : ""
+                            }>Completed</option>
                         </select>
                     </td>
                     <td>
@@ -180,58 +208,73 @@
                     </td>
                 `;
 
-                tableBody.appendChild(row);
-            });
+            tableBody.appendChild(row);
+          });
         }
 
         function clearFilters() {
-            document.getElementById("filterOffice").value = "";
-            document.getElementById("filterInstaller").value = "";
-            document.getElementById("filterStatus").value = "";
-            applyFilters(); // Reapply filters with cleared inputs
+          document.getElementById("filterOffice").value = "";
+          document.getElementById("filterInstaller").value = "";
+          document.getElementById("filterStatus").value = "";
+          applyFilters(); // Reapply filters with cleared inputs
         }
 
         function applyFilters() {
-            const office = document.getElementById("filterOffice").value;
-            const installer = document.getElementById("filterInstaller").value.toLowerCase();
-            const status = document.getElementById("filterStatus").value;
+          const office = document.getElementById("filterOffice").value;
+          const installer = document
+            .getElementById("filterInstaller")
+            .value.toLowerCase();
+          const status = document.getElementById("filterStatus").value;
 
-            const filteredJobs = jobs.filter(job => {
-                return (
-                    (office === "" || job.office === office) &&
-                    (installer === "" || job.installer.toLowerCase().includes(installer)) &&
-                    (status === "" || job.status === status)
-                );
-            });
+          const filteredJobs = jobs.filter((job) => {
+            return (
+              (office === "" || job.office === office) &&
+              (installer === "" ||
+                job.installer.toLowerCase().includes(installer)) &&
+              (status === "" || job.status === status)
+            );
+          });
 
-            renderTable(filteredJobs);
+          renderTable(filteredJobs);
         }
 
         function updateStatus(index, selectElement) {
-            const newStatus = selectElement.value;
-            jobs[index].status = newStatus;
-            applyFilters();
+          const newStatus = selectElement.value;
+          jobs[index].status = newStatus;
+          applyFilters();
         }
 
-        document.getElementById('modal').style.display = 'none';
-        document.getElementById('backdrop').style.display = 'none';
+        document.getElementById("modal").style.display = "none";
+        document.getElementById("backdrop").style.display = "none";
 
         function showInstructions() {
-            // Show modal and backdrop when the link is clicked
-            document.getElementById('modal').style.display = 'block';
-            document.getElementById('backdrop').style.display = 'block';
+          // Show modal and backdrop when the link is clicked
+          document.getElementById("modal").style.display = "block";
+          document.getElementById("backdrop").style.display = "block";
         }
 
         function hideInstructions() {
-            // Hide modal and backdrop when closed
-            document.getElementById('modal').style.display = 'none';
-            document.getElementById('backdrop').style.display = 'none';
+          // Hide modal and backdrop when closed
+          document.getElementById("modal").style.display = "none";
+          document.getElementById("backdrop").style.display = "none";
         }
 
         // Initial render
         renderTable();
-    </script>
-</body>
+      </script>
+      <footer class="footer">
+        <p>Kitchen Saver Cabinets - Internal Use Only</p>
+        <p>
+          Need help? Contact IT Support at
+          <a href="mailto:itsupport@kitchensaver.com"
+            >itsupport@kitchensaver.com</a
+          >
+          <!-- email is a dummy place holder untill i get the real IT email -->
+        </p>
+        <p>Demo Version 1.0 | Last Updated: Jan 2025</p>
+      </footer>
+    </div>
+  </body>
 </html>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css" />

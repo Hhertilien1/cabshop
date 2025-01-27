@@ -1,53 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <link rel="stylesheet" href="style.css" />
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up Page</title>
-</head>
-<body>
-    <div class="login-container">
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="login-container">
         <header>
-            <h1 class="dashboard-headline">Create Your Account</h1>
-            <h2 class="dashboard-subheadline">Join us today and unlock access to your personalized workspace.</h2>
+          <h1 class="dashboard-headline">Create Your Account</h1>
+          <h2 class="dashboard-subheadline">
+            Join us today and unlock access to your personalized workspace.
+          </h2>
         </header>
         <h2>Sign Up</h2>
         <form action="/register" method="POST">
-            <!-- First Name Input -->
-            <input type="text" name="first_name" class="form-input" placeholder="Enter your first name" required>
-            
-            <!-- Last Name Input -->
-            <input type="text" name="last_name" class="form-input" placeholder="Enter your last name" required>
-            
-            <!-- Email Input -->
-            <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
-            
-            <!-- Cell Phone Input -->
-            <input type="tel" name="cell" class="form-input" placeholder="Enter your cell number" required><br/>
-            
-            <!-- Office Dropdown -->
-            <select name="office" class="form-input" required>
-                <option value="" disabled selected>Select your office</option>
-                <option value="400">400</option>
-                <option value="402">402</option>
-                <option value="403">403</option>
-            </select><br/>
-            
-            <!-- Role Dropdown -->
-            <select name="role" class="form-input" required>
-                <option value="" disabled selected>Select your role</option>
-                <option value="installer">Installer</option>
-                <option value="cabinet_maker">Cabinet Maker</option>
-                <option value="admin">Admin</option>
-            </select>
+          <!-- First Name Input -->
+          <input
+            type="text"
+            name="first_name"
+            class="form-input"
+            placeholder="Enter your first name"
+            required
+          />
+
+          <!-- Last Name Input -->
+          <input
+            type="text"
+            name="last_name"
+            class="form-input"
+            placeholder="Enter your last name"
+            required
+          />
+
+          <!-- Email Input -->
+          <input
+            type="email"
+            name="email"
+            class="form-input"
+            placeholder="Enter your email"
+            required
+          />
+
+          <!-- Cell Phone Input -->
+          <input
+            type="tel"
+            name="cell"
+            class="form-input"
+            placeholder="Enter your cell number"
+            required
+          /><br />
+
+          <!-- Office Dropdown -->
+          <select name="office" class="form-input" required>
+            <option value="" disabled selected>Select your office</option>
+            <option value="400">400</option>
+            <option value="402">402</option>
+            <option value="403">403</option></select
+          ><br />
+
+          <!-- Role Dropdown -->
+          <select name="role" class="form-input" required>
+            <option value="" disabled selected>Select your role</option>
+            <option value="installer">Installer</option>
+            <option value="cabinet_maker">Cabinet Maker</option>
+            <option value="admin">Admin</option>
+          </select>
         </form>
         <!-- Register Button -->
         <button type="submit" class="form-button">Register</button>
         <div class="signup-link">
-            <p>Already have an account? <button onclick="window.location.href='login.html'">Log in!</button></p>
+          <p>
+            Already have an account?
+            <button onclick="window.location.href='login.html'">Log in!</button>
+          </p>
         </div>
+      </div>
     </div>
 </body>
+<footer class="footer">
+  <p>Kitchen Saver Cabinets - Internal Use Only</p>
+  <p>
+    Need help? Contact IT Support at
+    <a href="mailto:itsupport@kitchensaver.com"
+      >itsupport@kitchensaver.com</a
+    >
+    <!-- email is a dummy place holder untill i get the real IT email -->
+  </p>
+  <p>Demo Version 1.0 | Last Updated: Jan 2025</p>
+</footer>
 </html>
