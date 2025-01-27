@@ -106,6 +106,50 @@
         <p class="success" id="success"></p>
       </form>
 
+      <h1 class="table-name">Kitchen Saver Cabinets</h1>
+      <div class="filter-container">
+        <form id="filterForm">
+          <label for="filterOffice">Filter by Office:</label>
+          <select id="filterOffice" onchange="applyFilters()">
+            <option value="">All Offices</option>
+            <option value="400">400</option>
+            <option value="402">402</option>
+            <option value="403">403</option>
+          </select>
+
+          <label for="filterInstaller">Filter by Installer:</label>
+          <input
+            type="text"
+            id="filterInstaller"
+            placeholder="Installer Name"
+            oninput="applyFilters()"
+          />
+
+          <label for="filterStatus">Filter by Status:</label>
+          <select id="filterStatus" onchange="applyFilters()">
+            <option value="">All Statuses</option>
+            <option value="To-Do">To-Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button type="button" onclick="showInstructions()">
+            How to Use Filters
+          </button>
+          <button type="button" onclick="clearFilters()">Clear Filters</button>
+        </form>
+      </div>
+
+      <div class="backdrop" id="backdrop" onclick="hideInstructions()"></div>
+      <div class="modal" id="modal">
+        <h2>How to Use Filters</h2>
+        <p>
+          Select filters from the dropdown menus to narrow down the displayed
+          jobs by office or status.
+        </p>
+        <p>Click "Apply" to see filtered results.</p>
+        <button onclick="hideInstructions()">Close</button>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -127,7 +171,34 @@
       </table>
 
       <script>
-        let jobs = [];
+        let jobs = [
+          {
+            jobNumber: 101,
+            jobName: "Kitchen Remodel A",
+            numCabinets: 10,
+            numUppers: 6,
+            numLowers: 4,
+            cabinetMaker: "John Doe",
+            installer: "Mike Smith",
+            dueDate: "2025-02-15",
+            jobColor: "White",
+            office: "400",
+            status: "To-Do",
+          },
+          {
+            jobNumber: 102,
+            jobName: "Kitchen Remodel B",
+            numCabinets: 15,
+            numUppers: 8,
+            numLowers: 7,
+            cabinetMaker: "Jane Doe",
+            installer: "Sarah Lee",
+            dueDate: "2025-03-10",
+            jobColor: "Blue",
+            office: "402",
+            status: "In Progress",
+          },
+        ];
 
         function addJob() {
           const errorElement = document.getElementById("error");
@@ -190,11 +261,11 @@
           document.getElementById("jobForm").reset();
         }
 
-        function renderTable() {
+        function renderTable(filteredJobs = jobs) {
           const tableBody = document.getElementById("jobTableBody");
           tableBody.innerHTML = "";
 
-          jobs.forEach((job, index) => {
+          filteredJobs.forEach((job, index) => {
             const row = document.createElement("tr");
 
             let statusClass = "";
@@ -207,37 +278,76 @@
             }
 
             row.innerHTML = `
-                    <td>${job.jobNumber}</td>
-                    <td>${job.jobName}</td>
-                    <td>${job.numCabinets}</td>
-                    <td>${job.numUppers}</td>
-                    <td>${job.numLowers}</td>
-                    <td>${job.cabinetMaker}</td>
-                    <td>${job.installer}</td>
-                    <td>${job.dueDate}</td>
-                    <td>${job.jobColor}</td>
-                    <td>${job.office}</td>
-                    <td class="${statusClass}">${job.status}</td>
-                    <td>
-                        <button onclick="editJob(${index})">Edit</button>
-                        <button onclick="deleteJob(this)">Delete</button>
-                    </td>
-                `;
+                <td>${job.jobNumber}</td>
+                <td>${job.jobName}</td>
+                <td>${job.numCabinets}</td>
+                <td>${job.numUppers}</td>
+                <td>${job.numLowers}</td>
+                <td>${job.cabinetMaker}</td>
+                <td>${job.installer}</td>
+                <td>${job.dueDate}</td>
+                <td>${job.jobColor}</td>
+                <td>${job.office}</td>
+                <td>
+                    <select onchange="updateStatus(${index}, this)" class="${statusClass}">
+                        <option value="To-Do" ${
+                          job.status === "To-Do" ? "selected" : ""
+                        }>To-Do</option>
+                        <option value="In Progress" ${
+                          job.status === "In Progress" ? "selected" : ""
+                        }>In Progress</option>
+                        <option value="Completed" ${
+                          job.status === "Completed" ? "selected" : ""
+                        }>Completed</option>
+                    </select>
+                </td>
+                <td class="actions">
+                    <button onclick="editJob(${index})">Edit</button>
+                    <button onclick="deleteJob(this)">Delete</button>
+                </td>
+            `;
 
             tableBody.appendChild(row);
           });
         }
 
+        function clearFilters() {
+          document.getElementById("filterOffice").value = "";
+          document.getElementById("filterInstaller").value = "";
+          document.getElementById("filterStatus").value = "";
+          applyFilters(); // Reapply filters with cleared inputs
+        }
+
+        function applyFilters() {
+          const office = document.getElementById("filterOffice").value;
+          const installer = document
+            .getElementById("filterInstaller")
+            .value.toLowerCase();
+          const status = document.getElementById("filterStatus").value;
+
+          const filteredJobs = jobs.filter((job) => {
+            return (
+              (office === "" || job.office === office) &&
+              (installer === "" ||
+                job.installer.toLowerCase().includes(installer)) &&
+              (status === "" || job.status === status)
+            );
+          });
+
+          renderTable(filteredJobs);
+        }
+
         function deleteJob(index) {
-          if (confirm("Are you sure you want to delete this job?")) {
+          const confirmed = confirm("Are you sure you want to delete this job?");
+          if (confirmed) {
             jobs.splice(index, 1);
-            renderTable();
+            applyFilters();  
           }
         }
 
         function editJob(index) {
           const job = jobs[index];
-
+          // You can pre-fill the form with the job details to allow editing
           document.getElementById("jobNumber").value = job.jobNumber;
           document.getElementById("jobName").value = job.jobName;
           document.getElementById("numCabinets").value = job.numCabinets;
@@ -250,10 +360,34 @@
           document.getElementById("office").value = job.office;
           document.getElementById("status").value = job.status;
 
-          // Remove the job and re-render table after editing
-          jobs.splice(index, 1);
-          renderTable();
+          // Optional: Change the button to 'Update Job' instead of 'Add Job'
         }
+
+
+
+        function updateStatus(index, selectElement) {
+          const newStatus = selectElement.value;
+          jobs[index].status = newStatus;
+          applyFilters();
+        }
+
+        document.getElementById("modal").style.display = "none";
+        document.getElementById("backdrop").style.display = "none";
+
+        function showInstructions() {
+          // Show modal and backdrop when the link is clicked
+          document.getElementById("modal").style.display = "block";
+          document.getElementById("backdrop").style.display = "block";
+        }
+
+        function hideInstructions() {
+          // Hide modal and backdrop when closed
+          document.getElementById("modal").style.display = "none";
+          document.getElementById("backdrop").style.display = "none";
+        }
+
+        // Initial render
+        renderTable();
       </script>
       <footer class="footer">
         <p>Kitchen Saver Cabinets - Internal Use Only</p>
