@@ -282,11 +282,26 @@
               office: document.getElementById("office").value,
               status: document.getElementById("status").value,
             };
+            
+            jobs[jobIndex] = {
+              jobNumber,
+              jobName,
+              numCabinets,
+              numUppers,
+              numLowers,
+              cabinetMaker,
+              installer,
+              dueDate,
+              jobColor,
+              office,
+              status,
+            };
 
             jobs[jobIndex] = updatedJob;
             document.getElementById("success").innerText =
               "Job updated successfully!";
             clearForm();
+            renderTable();
           } else {
             document.getElementById("error").innerText = "Job not found!";
           }
@@ -353,7 +368,6 @@
           document.getElementById("filterStatus").value = "";
           applyFilters(); // Reapply filters with cleared inputs
         }
-        
 
         function applyFilters() {
           const office = document.getElementById("filterOffice").value;
