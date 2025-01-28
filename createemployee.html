@@ -134,10 +134,26 @@
 
         <div class="form-actions">
           <button type="button" onclick="addEmployee()">Add Employee</button>
+          <button
+            type="button"
+            id="updateButton"
+            style="display: none"
+            onclick="updateEmployee()"
+          >
+            Update Employee
+          </button>
           <button type="button" onclick="clearForm()">Clear Form</button>
         </div>
         <p class="error" id="error"></p>
       </form>
+
+      <label for="officeFilter">Filter by Office: </label>
+      <select id="officeFilter" onchange="filterEmployees()">
+        <option value="">All Offices</option>
+        <option value="400">400</option>
+        <option value="402">402</option>
+        <option value="403">403</option>
+      </select>
 
       <table>
         <thead>
@@ -205,14 +221,18 @@
           clearForm();
         }
 
-        function renderTable() {
+        function renderTable(filterOffice = "") {
           const tableBody = document.getElementById("employeeTableBody");
           tableBody.innerHTML = "";
 
-          employees.forEach((employee, index) => {
-            const row = document.createElement("tr");
+          employees
+            .filter(
+              (employee) => !filterOffice || employee.office === filterOffice
+            )
+            .forEach((employee, index) => {
+              const row = document.createElement("tr");
 
-            row.innerHTML = `
+              row.innerHTML = `
                     <td>${employee.firstName}</td>
                     <td>${employee.lastName}</td>
                     <td>${employee.username}</td>
@@ -221,12 +241,13 @@
                     <td>${employee.role}</td>
                     <td>${employee.office}</td>
                     <td class="actions">
-                        <button onclick="deleteEmployee(this)">Delete</button>
+                        <button onclick="editEmployee(${index})">Edit</button>
+                        <button onclick="deleteEmployee(${index})">Delete</button>
                     </td>
                 `;
 
-            tableBody.appendChild(row);
-          });
+              tableBody.appendChild(row);
+            });
         }
 
         function clearForm() {
@@ -242,7 +263,6 @@
 
         function editEmployee(index) {
           const employee = employees[index];
-
           document.getElementById("firstName").value = employee.firstName;
           document.getElementById("lastName").value = employee.lastName;
           document.getElementById("username").value = employee.username;
@@ -251,8 +271,36 @@
           document.getElementById("role").value = employee.role;
           document.getElementById("office").value = employee.office;
 
-          employees.splice(index, 1);
+          editIndex = index;
+          document.getElementById("updateButton").style.display = "inline";
+        }
+
+        function updateEmployee() {
+          const firstName = document.getElementById("firstName").value;
+          const lastName = document.getElementById("lastName").value;
+          const username = document.getElementById("username").value;
+          const email = document.getElementById("email").value;
+          const cell = document.getElementById("cell").value;
+          const role = document.getElementById("role").value;
+          const office = document.getElementById("office").value;
+
+          employees[editIndex] = {
+            firstName,
+            lastName,
+            username,
+            email,
+            cell,
+            role,
+            office,
+          };
+
           renderTable();
+          clearForm();
+        }
+
+        function filterEmployees() {
+          const officeFilter = document.getElementById("officeFilter").value;
+          renderTable(officeFilter);
         }
       </script>
       <footer class="footer">
