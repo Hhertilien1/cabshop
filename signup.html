@@ -58,8 +58,8 @@
             <option value="" disabled selected>Select your office</option>
             <option value="400">400</option>
             <option value="402">402</option>
-            <option value="403">403</option></select
-          ><br />
+            <option value="403">403</option>
+          </select><br />
 
           <!-- Role Dropdown -->
           <select name="role" class="form-input" required>
@@ -67,10 +67,30 @@
             <option value="installer">Installer</option>
             <option value="cabinet_maker">Cabinet Maker</option>
             <option value="admin">Admin</option>
-          </select>
+          </select><br />
+
+          <!-- Password Input -->
+          <input
+            type="password"
+            name="password"
+            class="form-input"
+            placeholder="Enter your password"
+            required
+          /><br />
+
+          <!-- Confirm Password Input -->
+          <input
+            type="password"
+            name="confirm_password"
+            class="form-input"
+            placeholder="Confirm your password"
+            required
+          /><br />
+
+          <!-- Register Button -->
+          <button onclick="window.location.href='Login.html'" type="submit" class="form-button">Register</button>
         </form>
-        <!-- Register Button -->
-        <button type="submit" class="form-button">Register</button>
+
         <div class="signup-link">
           <p>
             Already have an account?
@@ -79,16 +99,17 @@
         </div>
       </div>
     </div>
-</body>
-<footer class="footer">
-  <p>Kitchen Saver Cabinets - Internal Use Only</p>
-  <p>
-    Need help? Contact IT Support at
-    <a href="mailto:itsupport@kitchensaver.com"
-      >itsupport@kitchensaver.com</a
-    >
-    <!-- email is a dummy place holder untill i get the real IT email -->
-  </p>
-  <p>Demo Version 1.0 | Last Updated: Jan 2025</p>
-</footer>
+
+    <footer class="footer">
+      <p>Kitchen Saver Cabinets - Internal Use Only</p>
+      <p>
+        Need help? Contact IT Support at
+        <a href="mailto:itsupport@kitchensaver.com"
+          >itsupport@kitchensaver.com</a
+        >
+        <!-- email is a dummy placeholder until I get the real IT email -->
+      </p>
+      <p>Demo Version 1.0 | Last Updated: Jan 2025</p>
+    </footer>    
+  </body>
 </html>
