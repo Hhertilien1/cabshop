@@ -47,6 +47,15 @@
       .status-completed {
         color: green;
       }
+      .status-no {
+        color: red;
+      }
+      .status-yes {
+        color: green;
+      }
+      input[type="file"] {
+        border: none;
+      }
     </style>
   </head>
   <body>
@@ -118,6 +127,9 @@
             <th>Job Color</th>
             <th>Office</th>
             <th>Status</th>
+            <th>Materials Ordered</th>
+            <th>Materials Arrived</th>
+            <th>Photos</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -138,6 +150,9 @@
             jobColor: "White",
             office: "400",
             status: "To-Do",
+            materialsOrdered: "Yes",
+            materialsArrived: "No",
+            photos: "",
           },
           {
             jobNumber: 102,
@@ -151,6 +166,9 @@
             jobColor: "Blue",
             office: "402",
             status: "In Progress",
+            materialsOrdered: "No",
+            materialsArrived: "Yes",
+            photos: "",
           },
         ];
 
@@ -180,6 +198,10 @@
               statusClass = "status-completed";
             }
 
+            const materialsOrderedClass = job.materialsOrdered === "Yes" ? "status-yes" : "status-no";
+            const materialsArrivedClass = job.materialsArrived === "Yes" ? "status-yes" : "status-no";
+
+
             row.innerHTML = `
                     <td>${job.jobNumber}</td>
                     <td>${job.jobName}</td>
@@ -204,6 +226,22 @@
                             }>Completed</option>
                         </select>
                     </td>
+                     <td>
+                        <select onchange="updateMaterialOrdered(${index}, this)" class="${materialsOrderedClass}">
+                            <option value="Yes" ${job.materialsOrdered === "Yes" ? "selected" : ""}>Yes</option>
+                            <option value="No" ${job.materialsOrdered === "No" ? "selected" : ""}>No</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select onchange="updateMaterialArrived(${index}, this)" class="${materialsArrivedClass}">
+                            <option value="Yes" ${job.materialsArrived === "Yes" ? "selected" : ""}>Yes</option>
+                            <option value="No" ${job.materialsArrived === "No" ? "selected" : ""}>No</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="file" onchange="uploadPhoto(${index}, this)" />
+                        ${job.photos ? `<a href="${job.photos}" target="_blank">View Photo</a>` : ""}
+                    </td>
                     <td class="actions">
                         <button onclick="deleteJob(this)">Delete</button>
                     </td>
@@ -211,6 +249,30 @@
 
             tableBody.appendChild(row);
           });
+        }
+
+        function updateMaterialOrdered(index, selectElement) {
+          const newMaterialOrdered = selectElement.value;
+          jobs[index].materialsOrdered = newMaterialOrdered;
+          applyFilters();
+        }
+
+        function updateMaterialArrived(index, selectElement) {
+          const newMaterialArrived = selectElement.value;
+          jobs[index].materialsArrived = newMaterialArrived;
+          applyFilters();
+        }
+
+        function uploadPhoto(index, inputElement) {
+          const file = inputElement.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              jobs[index].photos = e.target.result;
+              applyFilters();
+            };
+            reader.readAsDataURL(file);
+          }
         }
 
         function clearFilters() {
