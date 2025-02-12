@@ -266,3 +266,15 @@ main {
     color: #ffffff;
     text-decoration: underline; 
 }
+
+.nav-container {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the middle */
+    justify-content: space-between; /* Distributes space between the brand name and buttons */
+  }
+  
+  .brand-name {
+    color: white;
+    font-size: 24px;
+    margin-right: auto; /* Pushes the brand name to the left */
+  }
