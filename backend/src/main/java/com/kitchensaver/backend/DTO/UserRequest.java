@@ -1,5 +1,7 @@
 package com.kitchensaver.backend.DTO;
 
+
+// This class is used to get user details when they register
 public class UserRequest {
     private String firstName;
     private String lastName;

@@ -2,12 +2,14 @@ package com.kitchensaver.backend.model;
 
 import jakarta.persistence.*;
 
+
+// This marks the class as a database table
 @Entity
 @Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // The database automatically generates the ID
     private Long id;
 
     @Column(nullable = false)
@@ -97,7 +99,7 @@ public class User {
         this.password = password;
     }
 
-
+    // This checks if two users are the same by comparing their IDs
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,6 +108,7 @@ public class User {
         return id.equals(user.id);
     }
 
+    // This generates a unique number (hash code) for each user based on their ID
     @Override
     public int hashCode() {
         return id.hashCode();
