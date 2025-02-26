@@ -1,11 +1,11 @@
 package com.kitchensaver.backend.Repo;
 
-import com.kitchensaver.backend.model.User;
+import com.kitchensaver.backend.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 // connection to database to get user information
-public interface UserRepo  extends JpaRepository<User, Long> {
+public interface UserRepo  extends JpaRepository<Users, Long> {
 
 
     /**
@@ -14,5 +14,5 @@ public interface UserRepo  extends JpaRepository<User, Long> {
      * @param email The user's email.
      * @return The user if found, or nothing if not found.
      */
-    Optional<User> findByEmail(String email);
+    Optional<Users> findByEmail(String email);
 }

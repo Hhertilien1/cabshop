@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 
 // This marks the class as a database table
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "users")
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // The database automatically generates the ID
@@ -27,8 +27,10 @@ public class User {
     @Column(nullable = false)
     private String office;
 
+    @Enumerated(EnumType.STRING) // Store role as a string
     @Column(nullable = false)
-    private String role;
+    private Role role;
+
 
     @Column(nullable = false)
     private String password;
@@ -83,13 +85,8 @@ public class User {
         this.office = office;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 
     public String getPassword() {
         return password;
@@ -104,7 +101,7 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        Users user = (Users) o;
         return id.equals(user.id);
     }
 
